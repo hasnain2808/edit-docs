@@ -1,0 +1,125 @@
+{
+ "actions": [],
+ "creation": "2021-04-14 11:55:57.240040",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "raised_by",
+  "approved_by",
+  "status",
+  "attachment_path_mapping",
+  "pull_request_section",
+  "pr_title",
+  "pr_body",
+  "pr_link",
+  "repository",
+  "route",
+  "published"
+ ],
+ "fields": [
+  {
+   "fieldname": "raised_by",
+   "fieldtype": "Link",
+   "label": "Raised By",
+   "options": "User"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Unapproved\nApproved"
+  },
+  {
+   "fieldname": "attachment_path_mapping",
+   "fieldtype": "Text",
+   "hidden": 1,
+   "label": "Attachment Path Mapping"
+  },
+  {
+   "fieldname": "pull_request_section",
+   "fieldtype": "Section Break",
+   "label": "Pull Request"
+  },
+  {
+   "fieldname": "pr_title",
+   "fieldtype": "Data",
+   "label": "PR Title"
+  },
+  {
+   "fieldname": "pr_body",
+   "fieldtype": "Text",
+   "label": "PR Body"
+  },
+  {
+   "fieldname": "pr_link",
+   "fieldtype": "Data",
+   "label": "PR Link"
+  },
+  {
+   "fieldname": "repository",
+   "fieldtype": "Link",
+   "label": "Repository",
+   "options": "Repository"
+  },
+  {
+   "fieldname": "route",
+   "fieldtype": "Small Text",
+   "label": "Route"
+  },
+  {
+   "default": "1",
+   "fieldname": "published",
+   "fieldtype": "Check",
+   "label": "Published"
+  }
+ ],
+ "has_web_view": 1,
+ "index_web_pages_for_search": 1,
+ "is_published_field": "published",
+ "links": [],
+ "modified": "2021-04-19 16:10:06.479836",
+ "modified_by": "Administrator",
+ "module": "Documentation Editor",
+ "name": "Pull Request",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "if_owner": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "route": "pull-request",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
+}

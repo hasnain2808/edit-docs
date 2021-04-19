@@ -101,25 +101,11 @@ app_license = "MIT"
 
 # Scheduled Tasks
 # ---------------
-
-# scheduler_events = {
-# 	"all": [
-# 		"edit_docs.tasks.all"
-# 	],
-# 	"daily": [
-# 		"edit_docs.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"edit_docs.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"edit_docs.tasks.weekly"
-# 	]
-# 	"monthly": [
-# 		"edit_docs.tasks.monthly"
-# 	]
-# }
-
+scheduler_events = {
+	"hourly": [
+		"edit_docs.documentation_editor.doctype.pull_request.pull_request.update_pr_status"
+	],
+}
 # Testing
 # -------
 
