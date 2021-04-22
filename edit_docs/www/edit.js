@@ -10,6 +10,7 @@ class EditAsset {
     this.make_submit_section_field_group();
     this.render_preview();
     this.add_attachment_handler();
+    this.set_listeners();
   }
 
   render_preview() {
@@ -184,62 +185,89 @@ class EditAsset {
 
   build_attachment_table() {
     var wrapper = $(".wiki-attachment");
+    debugger;
     wrapper.empty();
 
     var table = $(
-      '<table class="table table-bordered" style="cursor:pointer; margin:0px;"><thead>\
-	<tr><th style="width: 33%">' +
-        __("File Name") +
-        '</th><th style="width: 33%">' +
-        __("Current Path") +
-        "</th><th>" +
-        __("Path While Submitting") +
-        "</th></tr>\
-	</thead><tbody></tbody></table>"
-    ).appendTo(wrapper);
-    $(
-      '<p class="text-muted small">' + __("Click table to edit") + "</p>"
+      `<table class="table table-bordered attachment-table" style="cursor:pointer; margin:0px;">
+        <thead>
+        	<tr>
+            <th style="width: 30%">' ${__("File Name")}</th>
+            <th style="width: 50%">${__("Location to save the file")} </th>
+            <th>${__("Actions")} </th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>`
     ).appendTo(wrapper);
 
     this.attachments.forEach((f) => {
       const row = $("<tr></tr>").appendTo(table.find("tbody"));
-      $("<td>" + f.file_name + "</td>").appendTo(row);
-      $("<td>" + f.file_url + "</td>").appendTo(row);
-      $("<td>" + f.save_path + "</td>").appendTo(row);
+      $(`<td>${f.file_name}</td>`).appendTo(row);
+      $(`<td>${f.save_path? f.save_path : "Do not Upload"}</td>`).appendTo(row);
+      $(`<td>
+          <a class="btn btn-default btn-xs center edit-button"  data-name = "${f.file_name}" >
+				    Edit
+			    </a>
+          &nbsp&nbsp
+          <a class="btn btn-default btn-xs center delete-button"  data-name = "${f.file_name}" >
+				    Delete
+			    </a>
+        </td>`).appendTo(row);
     });
 
-    table.on("click", () => this.table_click_handler());
+    // table.on("click", () => this.table_click_handler());
   }
 
-  table_click_handler() {
+  set_listeners() {
     var me = this;
-    var dfs = [];
-    this.attachments.forEach((f) => {
-      dfs.push({
-        fieldname: f.file_name,
-        fieldtype: "Data",
-        label: f.file_name,
-      });
-    });
-    let dialog = new frappe.ui.Dialog({
-      fields: dfs,
-      primary_action: function () {
-        var values = this.get_values();
-        if (values) {
-          this.hide();
-          // frm.set_value('filters', JSON.stringify(values));
-          me.save_paths = values;
-          me.attachments.forEach((f) => {
-            f.save_path = values[f.file_name];
+    $(` .wiki-attachment `).on("click", `.edit-button`, function () {
+      var dfs = [];
+      me.attachments.forEach((f) => {
+        console.log($(this).attr("data-name"));
+        if (f.file_name == $(this).attr("data-name")) {
+          dfs.push({
+            fieldname: f.file_name,
+            fieldtype: "Data",
+            label: f.file_name,
           });
-          console.log(values);
-          console.log(me.attachments);
-          me.build_attachment_table();
         }
-      },
+      });
+      let dialog = new frappe.ui.Dialog({
+        fields: dfs,
+        title: __("Add path where this file should be saved."),
+        primary_action: function () {
+          var values = this.get_values();
+          if (values) {
+            this.hide();
+            me.attachments.forEach((f) => {
+              f.save_path = values[f.file_name];
+              me.save_paths[f.file_name] = values[f.file_name];
+            });
+            me.build_attachment_table();
+          }
+        },
+      });
+      dialog.show();
+      dialog.set_values(me.save_paths);
     });
-    dialog.show();
-    dialog.set_values(me.save_paths);
+
+    $(` .wiki-attachment `).on("click", `.delete-button`, function () {
+      frappe.confirm(
+        `Are you sure you want to delete the file "${$(this).attr(
+          "data-name"
+        )}"`,
+        () => {
+          // action to perform if Yes is selected
+          me.attachments.forEach((f, index, object) => {
+            if (f.file_name == $(this).attr("data-name")) {
+              object.splice(index, 1);
+            }
+            me.build_attachment_table();
+          });
+        }
+      );
+    });
   }
 
   build_file_table() {
