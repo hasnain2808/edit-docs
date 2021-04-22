@@ -15,6 +15,7 @@ class EditAsset {
 
   render_preview() {
     // frappe.ready(() => {
+
     $('a[data-toggle="tab"]').on("shown.bs.tab", (e) => {
       let activeTab = $(e.target);
 
@@ -26,7 +27,13 @@ class EditAsset {
         let content = $("textarea#content").val();
         let $preview = $(".wiki-preview");
         let $diff = $(".wiki-diff");
+        if (!this.code_field_group.get_value("code")) {
+          $preview.html("<div>Please select a route</div>");
+          $diff.html("<div>Please select a route</div>");
+          return;
+        }
         $preview.html("Loading preview...");
+        $diff.html("Loading diff...");
         frappe.call({
           method: "edit_docs.www.edit.preview",
           args: {
@@ -41,10 +48,6 @@ class EditAsset {
             }
           },
         });
-      }
-
-      if (activeTab.prop("id") === "diff-tab") {
-        console.log("diff");
       }
     });
     // })
@@ -288,21 +291,20 @@ class EditAsset {
 
       me.edit_field_group
         .get_field("route_link")
-        .set_value($(this).attr("data-name")).then(()=>{
+        .set_value($(this).attr("data-name"))
+        .then(() => {
           me.update_code();
           $("#write-tab").addClass("active");
           $("#files-tab").removeClass("active");
           $("#write").addClass("show active");
           $("#files").removeClass("show active");
-        })
-
+        });
     });
   }
 
   build_file_table() {
     var wrapper = $(".wiki-files");
     wrapper.empty();
-    debugger;
     var table = $(
       '<table class="table table-bordered" style="cursor:pointer; margin:0px;"><thead>\
 	<tr><th>' +
