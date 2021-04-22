@@ -66,12 +66,12 @@ class EditAsset {
           fieldtype: "Button",
           click: () => this.update_code(),
         },
-        {
-          label: __("Overwrite From Disk"),
-          fieldname: "code_from_disk",
-          fieldtype: "Button",
-          click: () => this.update_code(true),
-        },
+        // {
+        //   label: __("Overwrite From Disk"),
+        //   fieldname: "code_from_disk",
+        //   fieldtype: "Button",
+        //   click: () => this.update_code(true),
+        // },
       ],
       body: $(".routedisp"),
     });
@@ -97,24 +97,21 @@ class EditAsset {
 
   update_code(from_disk = false) {
     const route = this.edit_field_group.get_value("route_link");
+    if (this.route)
+      this.edited_files[this.route] = this.code_field_group.get_value("code");
     if (route === this.route && !from_disk) return;
     if (route in this.edited_files && !from_disk) {
+      this.route = route;
       this.code_field_group
         .get_field("code")
         .set_value(this.edited_files[route]);
-      this.route = route;
+      this.build_file_table();
       return;
     }
     frappe.call({
       method: "edit_docs.www.edit.get_code",
       args: { route: route },
       callback: (r) => {
-        console.log(r);
-        if (this.route)
-          this.edited_files[this.route] = this.code_field_group.get_value(
-            "code"
-          );
-        console.log(this.edited_files);
         this.route = route;
         this.code_field_group.get_field("code").set_value(r.message);
         this.build_file_table();
@@ -204,7 +201,9 @@ class EditAsset {
     this.attachments.forEach((f) => {
       const row = $("<tr></tr>").appendTo(table.find("tbody"));
       $(`<td>${f.file_name}</td>`).appendTo(row);
-      $(`<td>${f.save_path? f.save_path : "Do not Upload"}</td>`).appendTo(row);
+      $(`<td>${f.save_path ? f.save_path : "Do not Upload"}</td>`).appendTo(
+        row
+      );
       $(`<td>
           <a class="btn btn-default btn-xs center edit-button"  data-name = "${f.file_name}" >
 				    Edit
@@ -268,6 +267,36 @@ class EditAsset {
         }
       );
     });
+
+    $(` .wiki-files `).on("click", `.delete-button`, function () {
+      frappe.confirm(
+        `Are you sure you want to reset changes for this route "${$(this).attr(
+          "data-name"
+        )}"`,
+        () => {
+          // action to perform if Yes is selected
+
+          delete me.edited_files[$(this).attr("data-name")];
+          console.log(this.edited_files);
+          me.build_file_table();
+        }
+      );
+    });
+
+    $(` .wiki-files `).on("click", `.edit-button`, function () {
+      // action to perform if Yes is selected
+
+      me.edit_field_group
+        .get_field("route_link")
+        .set_value($(this).attr("data-name")).then(()=>{
+          me.update_code();
+          $("#write-tab").addClass("active");
+          $("#files-tab").removeClass("active");
+          $("#write").addClass("show active");
+          $("#files").removeClass("show active");
+        })
+
+    });
   }
 
   build_file_table() {
@@ -278,6 +307,8 @@ class EditAsset {
       '<table class="table table-bordered" style="cursor:pointer; margin:0px;"><thead>\
 	<tr><th>' +
         __("Route") +
+        "</th><th>_" +
+        __("Actions") +
         "</th></tr>\
 	</thead><tbody></tbody></table>"
     ).appendTo(wrapper);
@@ -285,8 +316,28 @@ class EditAsset {
     for (var file in this.edited_files) {
       const row = $("<tr></tr>").appendTo(table.find("tbody"));
       $("<td>" + file + "</td>").appendTo(row);
+      $(`<td>
+      <a class="btn btn-default btn-xs center edit-button"  data-name = "${file}" >
+        Edit
+      </a>
+      &nbsp&nbsp
+      <a class="btn btn-default btn-xs center delete-button"  data-name = "${file}" >
+        Delete
+      </a>
+    </td>`).appendTo(row);
     }
-    const row = $("<tr></tr>").appendTo(table.find("tbody"));
-    $("<td>" + this.route + "</td>").appendTo(row);
+    if (!(this.route in this.edited_files)) {
+      const row = $("<tr></tr>").appendTo(table.find("tbody"));
+      $("<td>" + this.route + "</td>").appendTo(row);
+      $(`<td>
+      <a class="btn btn-default btn-xs center edit-button"  data-name = "${this.route}" >
+        Edit
+      </a>
+      &nbsp&nbsp
+      <a class="btn btn-default btn-xs center delete-button"  data-name = "${this.route}" >
+        Delete
+      </a>
+    </td>`).appendTo(row);
+    }
   }
 }
