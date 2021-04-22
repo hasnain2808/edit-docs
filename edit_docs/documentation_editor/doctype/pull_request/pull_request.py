@@ -12,7 +12,7 @@ from frappe.commands import popen
 import re
 import json
 from github import Github
-from edit_docs.www.edit import  get_source_generator
+from edit_docs.www.edit import  get_source_generator, get_path_without_slash
 
 
 class PullRequest(WebsiteGenerator):
@@ -61,7 +61,7 @@ class PullRequest(WebsiteGenerator):
 		if edit.new:
 			path = f"{self.repository_base_path}/{self.app}/www{edit.web_route}.md"
 		else:
-			resolved_route = resolve_route(edit.web_route[1:])
+			resolved_route = resolve_route(get_path_without_slash(edit.web_route))
 			if resolved_route.page_or_generator == "Generator":
 				path = f"{self.repository_base_path}/{path}"
 

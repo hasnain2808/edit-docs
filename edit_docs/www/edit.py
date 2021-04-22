@@ -18,7 +18,7 @@ def get_context(context):
 
 @frappe.whitelist()
 def get_code(route):
-	resolved_route = resolve_route(route[1:])
+	resolved_route = resolve_route(get_path_without_slash(route))
 	jenv = frappe.get_jenv()
 
 	if not resolved_route:
@@ -39,7 +39,7 @@ def preview(content, path, attachments="{}"):
 			content = content.replace(attachment.get("save_path"), attachment.get("file_url"))
 
 	try:
-		resolved_route = resolve_route(path[1:])
+		resolved_route = resolve_route(get_path_without_slash(path))
 	except Exception:
 		frappe.throw(
 			frappe.get_traceback(), title=_(f"Please recheck the path: {path}")
@@ -48,8 +48,8 @@ def preview(content, path, attachments="{}"):
 	if not resolved_route:
 		return {"diff": diff("", content), "html": frappe.utils.md_to_html(content)}
 
-	resolved_route.route = path[1:]
-	resolved_route.path = path[1:]
+	resolved_route.route = get_path_without_slash(path)
+	resolved_route.path = resolved_route.route
 
 	resolved_route = build_context(resolved_route)
 
@@ -164,3 +164,6 @@ def get_source(resolved_route, jenv):
 
 	elif resolved_route.page_or_generator == "Page":
 		return jenv.loader.get_source(jenv, resolved_route.template)[0]
+
+def get_path_without_slash(path):
+	return path[1:] if path.startswith('/') else path

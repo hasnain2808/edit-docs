@@ -11,14 +11,14 @@ from ghdiff import diff
 from frappe.website.router import resolve_route
 import re
 from frappe.website.context import build_context
-from edit_docs.www.edit import clean_js_css, get_source_generator
+from edit_docs.www.edit import clean_js_css, get_source_generator, get_path_without_slash
 
 
 class PullRequestRoute(Document):
 	def validate(self):
 		jenv = frappe.get_jenv()
 		try:
-			route = resolve_route(self.web_route[1:])
+			route = resolve_route(get_path_without_slash(self.web_route))
 		except Exception:
 			frappe.throw(
 				frappe.get_traceback(), title=_(f"Please recheck the path: {self.web_route}")
@@ -27,8 +27,8 @@ class PullRequestRoute(Document):
 			self.validate_new_file()
 			return
 
-		route.route = self.web_route[1:]
-		route.path = self.web_route[1:]
+		route.route = get_path_without_slash(self.web_route)
+		route.path = route.route
 		route = build_context(route)
 
 		if route.page_or_generator == "Generator":
