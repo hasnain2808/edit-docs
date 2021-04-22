@@ -6,5 +6,5 @@ from __future__ import unicode_literals
 # import frappe
 import unittest
 
-class TestPullRequestRoute(unittest.TestCase):
+class TestFilesChanged(unittest.TestCase):
 	pass

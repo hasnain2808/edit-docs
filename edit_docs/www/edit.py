@@ -142,7 +142,7 @@ def create_edited_files(content, name, attachments):
 	pull_req_route = {}
 	content = json.loads(content)
 	for route, change in content.items():
-		pull_req_route[route] = frappe.new_doc("Pull Request Route")
+		pull_req_route[route] = frappe.new_doc("Files Changed")
 		pull_req_route[route].new_code = change
 		pull_req_route[route].web_route = route
 		pull_req_route[route].pull_request = name

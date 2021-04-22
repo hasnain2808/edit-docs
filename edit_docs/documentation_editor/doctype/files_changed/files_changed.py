@@ -14,7 +14,7 @@ from frappe.website.context import build_context
 from edit_docs.www.edit import clean_js_css, get_source_generator, get_path_without_slash
 
 
-class PullRequestRoute(Document):
+class FilesChanged(Document):
 	def validate(self):
 		jenv = frappe.get_jenv()
 		try:

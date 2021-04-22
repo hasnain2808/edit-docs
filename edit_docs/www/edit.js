@@ -23,7 +23,6 @@ class EditAsset {
         activeTab.prop("id") === "preview-tab" ||
         activeTab.prop("id") === "diff-tab"
       ) {
-        console.log("in");
         let content = $("textarea#content").val();
         let $preview = $(".wiki-preview");
         let $diff = $(".wiki-diff");
@@ -177,7 +176,6 @@ class EditAsset {
         if (!this.attachments) this.attachments = [];
         if (!this.save_paths) this.save_paths = {};
         this.attachments.push(file_doc);
-        console.log(this.attachments);
         this.build_attachment_table();
       },
     });
@@ -185,7 +183,6 @@ class EditAsset {
 
   build_attachment_table() {
     var wrapper = $(".wiki-attachment");
-    debugger;
     wrapper.empty();
 
     var table = $(
@@ -226,7 +223,6 @@ class EditAsset {
     $(` .wiki-attachment `).on("click", `.edit-button`, function () {
       var dfs = [];
       me.attachments.forEach((f) => {
-        console.log($(this).attr("data-name"));
         if (f.file_name == $(this).attr("data-name")) {
           dfs.push({
             fieldname: f.file_name,
@@ -280,7 +276,6 @@ class EditAsset {
           // action to perform if Yes is selected
 
           delete me.edited_files[$(this).attr("data-name")];
-          console.log(this.edited_files);
           me.build_file_table();
         }
       );
@@ -309,7 +304,7 @@ class EditAsset {
       '<table class="table table-bordered" style="cursor:pointer; margin:0px;"><thead>\
 	<tr><th>' +
         __("Route") +
-        "</th><th>_" +
+        "</th><th>" +
         __("Actions") +
         "</th></tr>\
 	</thead><tbody></tbody></table>"

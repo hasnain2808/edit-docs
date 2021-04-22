@@ -47,9 +47,8 @@ class PullRequest(WebsiteGenerator):
 		self.repository_base_path = f"{os.getcwd()}/{frappe.local.site}/private/{self.uuid}"
 
 	def save_files(self):
-		print(self.name)
 		edits = frappe.get_all(
-			"Pull Request Route",
+			"Files Changed",
 			filters=[["pull_request", "=", self.name]],
 			fields=["name", "new_code", "web_route", "new"],
 		)
