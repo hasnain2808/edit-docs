@@ -128,9 +128,10 @@ class PullRequest(WebsiteGenerator):
 		popen(f"git -C {self.repository_base_path} branch {self.uuid}")
 		popen(f"git -C {self.repository_base_path} checkout {self.uuid}")
 		popen(f"git -C {self.repository_base_path} add .")
-		popen(f'git -C {self.repository_base_path} commit -m "docs:{self.pr_title}" ')
+		email = frappe.session.user
+		name = frappe.db.get_value("User", frappe.session.user, ["first_name"], as_dict=True).get("first_name")
+		popen(f'git -C {self.repository_base_path} commit -m "{self.pr_title}\n\n\n\nCo-authored-by: {name} <{email}>" ')
 		popen(f"git -C {self.repository_base_path} push origin {self.uuid}")
-
 
 def update_pr_status():
 	repository = frappe.get_doc("Repository", "erpnext_documentation")

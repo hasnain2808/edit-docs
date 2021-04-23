@@ -112,7 +112,7 @@ def _update(content, attachments="{}"):
 		"status": "Unapproved",
 		"raised_by": frappe.session.user,
 		"pr_title": "docs: automated pull request",
-		"pr_body": f"author: {frappe.session.user}",
+		"pr_body": f"Co-authored-by: {frappe.session.user}",
 		"repository": repository,
 		"attachment_path_mapping": attachments,
 	}
