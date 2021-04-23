@@ -1,0 +1,68 @@
+{
+ "actions": [],
+ "autoname": "field:frappe_app",
+ "creation": "2021-04-15 14:32:28.952875",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "frappe_app",
+  "upstream",
+  "origin",
+  "token",
+  "enabled"
+ ],
+ "fields": [
+  {
+   "fieldname": "frappe_app",
+   "fieldtype": "Data",
+   "label": "Frappe App",
+   "unique": 1
+  },
+  {
+   "fieldname": "upstream",
+   "fieldtype": "Data",
+   "label": "Upstream"
+  },
+  {
+   "fieldname": "origin",
+   "fieldtype": "Data",
+   "label": "Origin"
+  },
+  {
+   "fieldname": "token",
+   "fieldtype": "Password",
+   "label": "Token"
+  },
+  {
+   "default": "0",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-04-19 17:19:33.243802",
+ "modified_by": "Administrator",
+ "module": "Documentation Editor",
+ "name": "Repository",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
