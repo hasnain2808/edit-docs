@@ -1,0 +1,38 @@
+{% extends "templates/web.html" %}
+
+{%- block head_include %}
+{{ super() }}
+<!-- <link rel="stylesheet" href="/assets/wiki/css/wiki.css"> -->
+{% endblock -%}
+
+{% block page_container %}
+<div class="from-markdown">
+    <h1>Your Contributions</h1>
+</div>
+
+<div class="container">
+
+    <Table class="table table-bordered">
+        <thead>
+            <th>Edited Files</th>
+            <th>Status</th>
+            <th>Link</th>
+        </thead>
+        <tbody>
+            {% for contribution in contributions %}
+                <tr>
+                    <td>{{ contribution.files_edited}}</td>
+                    <td>{{ contribution.status }}</td>
+                    <td><a href="{{ contribution.pr_link }}">Link to the contribution</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </Table>
+
+    <br>
+    Currently Processing {{currently_running }} requests they will appear above once processed
+
+</div>
+
+
+{% endblock %}

@@ -86,14 +86,13 @@ def update(
 			_("Scheduler is inactive. Cannot Edit Docs."), title=_("Scheduler Inactive")
 		)
 
-	enqueued_jobs = [d.get("job_name") for d in get_info()]
 
 	enqueue(
 		_update,
 		queue="default",
 		timeout=6000,
 		event="_update",
-		job_name=frappe.generate_hash(),
+		job_name=f"Pull-Request-{frappe.session.user}",
 		content=content,
 		attachments=attachments,
 		now=frappe.conf.developer_mode or frappe.flags.in_test,

@@ -152,7 +152,7 @@ class EditAsset {
           "A Change Request has been generated. You can track your requests here after a few mins",
           5
         );
-        window.location.href = "/pull-request";
+        window.location.href = "/contributions";
       },
     });
   }
