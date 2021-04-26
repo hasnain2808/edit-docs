@@ -9,6 +9,7 @@ import json
 import re
 from frappe.website.context import build_context
 from frappe.utils.background_jobs import enqueue
+from frappe import _
 
 
 def get_context(context):

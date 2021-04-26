@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.website.website_generator import WebsiteGenerator
 from frappe.website.router import resolve_route
+from frappe import _
 import os
 import shutil
 from frappe.commands import popen
