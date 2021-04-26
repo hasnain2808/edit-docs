@@ -116,23 +116,23 @@ class PullRequest(WebsiteGenerator):
 		self.attachments = json.loads(self.attachment_path_mapping)
 
 	def git_set_remotes(self):
-		popen(f"git -C {self.repository_base_path} remote rm upstream ")
-		popen(f"git -C {self.repository_base_path} remote rm origin ")
+		popen(f"git -C {self.repository_base_path} remote rm upstream ", raise_err=True)
+		popen(f"git -C {self.repository_base_path} remote rm origin ", raise_err=True)
 		popen(
-			f"git -C {self.repository_base_path} remote add origin {self.repository.origin}"
+			f"git -C {self.repository_base_path} remote add origin {self.repository.origin}", raise_err=True
 		)
 		popen(
-			f"git -C {self.repository_base_path} remote add upstream {self.repository.upstream}"
+			f"git -C {self.repository_base_path} remote add upstream {self.repository.upstream}", raise_err=True
 		)
 
 	def git_push(self):
-		popen(f"git -C {self.repository_base_path} branch {self.uuid}")
-		popen(f"git -C {self.repository_base_path} checkout {self.uuid}")
-		popen(f"git -C {self.repository_base_path} add .")
+		popen(f"git -C {self.repository_base_path} branch {self.uuid}", raise_err=True)
+		popen(f"git -C {self.repository_base_path} checkout {self.uuid}", raise_err=True)
+		popen(f"git -C {self.repository_base_path} add .", raise_err=True)
 		email = frappe.session.user
 		name = frappe.db.get_value("User", frappe.session.user, ["first_name"], as_dict=True).get("first_name")
-		popen(f'git -C {self.repository_base_path} commit -m "{self.pr_title}\n\n\n\nCo-authored-by: {name} <{email}>" ')
-		popen(f"git -C {self.repository_base_path} push origin {self.uuid}")
+		popen(f'git -C {self.repository_base_path} commit -m "{self.pr_title}\n\n\n\nCo-authored-by: {name} <{email}>" ', raise_err=True)
+		popen(f'git -C {self.repository_base_path} push origin {self.uuid}', raise_err=True)
 
 def update_pr_status():
 	repository = frappe.get_doc("Repository", "erpnext_documentation")

@@ -27,6 +27,7 @@
    "label": "Upstream"
   },
   {
+   "description": "https://username:password@repository",
    "fieldname": "origin",
    "fieldtype": "Data",
    "label": "Origin"
@@ -54,7 +55,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-26 18:34:05.158886",
+ "modified": "2021-04-27 02:58:02.935887",
  "modified_by": "Administrator",
  "module": "Documentation Editor",
  "name": "Repository",
