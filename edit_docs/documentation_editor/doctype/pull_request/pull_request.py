@@ -93,7 +93,7 @@ class PullRequest(WebsiteGenerator):
 			)
 		except Exception:
 			frappe.throw(
-				frappe.get_traceback(), title=_(f"Please recheck the Repository origin: {repository.origin}")
+				frappe.get_traceback(), title=_(f"Please recheck the Repository origin: {self.repository.origin}")
 			)
 
 		upstream = self.repository.upstream.replace(".git", "/")
