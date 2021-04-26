@@ -7,6 +7,7 @@ from __future__ import unicode_literals
 # import frappe
 from frappe.model.document import Document
 import frappe
+from frappe import _
 from ghdiff import diff
 from frappe.website.router import resolve_route
 import re
