@@ -45,7 +45,7 @@ class PullRequest(WebsiteGenerator):
 		self.app = repository[0]["name"]
 		self.repository = frappe.get_doc("Repository", self.app)
 		self.uuid = frappe.generate_hash()
-		self.repository_base_path = f"{os.getcwd()}/{frappe.local.site}/private/{self.uuid}"
+		self.repository_base_path = f"{os.getcwd()}/{frappe.local.site}/private/edit_docs/{self.uuid}"
 
 	def save_files(self):
 		edits = frappe.get_all(
@@ -87,7 +87,7 @@ class PullRequest(WebsiteGenerator):
 			upstream_pullrequest = upstream_repo.create_pull(
 				self.pr_title,
 				self.pr_body,
-				"master",
+				self.repository.branch,
 				"{}:{}".format(self.repository.origin.split("/")[3], self.uuid),
 				True,
 			)
