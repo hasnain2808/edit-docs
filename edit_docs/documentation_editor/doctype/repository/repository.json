@@ -10,6 +10,8 @@
   "upstream",
   "origin",
   "token",
+  "branch",
+  "column_break_6",
   "enabled"
  ],
  "fields": [
@@ -39,11 +41,20 @@
    "fieldname": "enabled",
    "fieldtype": "Check",
    "label": "Enabled"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Data",
+   "label": "Branch"
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-19 17:19:33.243802",
+ "modified": "2021-04-26 18:34:05.158886",
  "modified_by": "Administrator",
  "module": "Documentation Editor",
  "name": "Repository",
