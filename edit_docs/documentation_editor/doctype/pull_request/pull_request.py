@@ -116,8 +116,8 @@ class PullRequest(WebsiteGenerator):
 		self.attachments = json.loads(self.attachment_path_mapping)
 
 	def git_set_remotes(self):
-		popen(f"git -C {self.repository_base_path} remote rm upstream ")
-		popen(f"git -C {self.repository_base_path} remote rm origin ")
+		popen(f"git -C {self.repository_base_path} remote rm upstream ", raise_err=True)
+		popen(f"git -C {self.repository_base_path} remote rm origin ", raise_err=True)
 		popen(
 			f"git -C {self.repository_base_path} remote add origin {self.repository.origin}", raise_err=True
 		)
