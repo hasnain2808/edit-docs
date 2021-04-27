@@ -9,9 +9,9 @@ from frappe.website.router import resolve_route
 from frappe import _
 import os
 import shutil
-from frappe.commands import popen
 import re
 import json
+import subprocess
 from github import Github
 from edit_docs.www.edit import  get_source_generator, get_path_without_slash
 
@@ -151,3 +151,37 @@ def update_pr_status():
 			status = "Approved" if gh_pr.merged else "Unapproved"
 			frappe.db.update("Pull Request", pr.name, "status", status)
 	frappe.db.commit()
+
+
+def popen(command, *args, **kwargs):
+	output = kwargs.get('output', True)
+	cwd = kwargs.get('cwd')
+	shell = kwargs.get('shell', True)
+	raise_err = kwargs.get('raise_err')
+	env = kwargs.get('env')
+	if env:
+		env = dict(environ, **env)
+
+	proc = subprocess.Popen(command,
+		stdout=None if output else subprocess.PIPE,
+		stderr=None if output else subprocess.PIPE,
+		shell=shell,
+		cwd=cwd,
+		env=env
+	)
+
+	try:
+		outs, errs = proc.communicate(timeout=15)
+	except TimeoutExpired:
+		proc.kill()
+		frappe.throw(
+				frappe.get_traceback(), title=_(command[:100] if not command else "subprocess error" )
+			)
+	print("outs", outs,)
+	print("errs", errs)
+	print(proc.returncode)
+	if proc.returncode and raise_err:
+		frappe.throw(
+				errs, title=_(command[:100] if not command else "subprocess error" )
+			)
+	return (outs, errs)
