@@ -129,6 +129,10 @@ class PullRequest(WebsiteGenerator):
 		popen(f"git -C {self.repository_base_path} branch {self.uuid}", raise_err=True)
 		popen(f"git -C {self.repository_base_path} checkout {self.uuid}", raise_err=True)
 		popen(f"git -C {self.repository_base_path} add .", raise_err=True)
+
+		popen(f'git -C {self.repository_base_path} config --global user.name "{self.repository.email}" ', raise_err=True)
+		popen(f'git -C {self.repository_base_path} config --global user.email "{self.repository.username}"', raise_err=True)
+
 		email = frappe.session.user
 		name = frappe.db.get_value("User", frappe.session.user, ["first_name"], as_dict=True).get("first_name")
 		popen(f'git -C {self.repository_base_path} commit -m "{self.pr_title}\n\n\n\nCo-authored-by: {name} <{email}>" ', raise_err=True)
@@ -154,7 +158,6 @@ def update_pr_status():
 
 
 def popen(command, *args, **kwargs):
-	output = kwargs.get('output', True)
 	cwd = kwargs.get('cwd')
 	shell = kwargs.get('shell', True)
 	raise_err = kwargs.get('raise_err')
@@ -163,8 +166,8 @@ def popen(command, *args, **kwargs):
 		env = dict(environ, **env)
 
 	proc = subprocess.Popen(command,
-		stdout=None if output else subprocess.PIPE,
-		stderr=None if output else subprocess.PIPE,
+		stdout=subprocess.PIPE,
+		stderr=subprocess.PIPE,
 		shell=shell,
 		cwd=cwd,
 		env=env
@@ -174,7 +177,7 @@ def popen(command, *args, **kwargs):
 
 	if proc.returncode and raise_err:
 		frappe.throw(
-				errs, title=_(command[0:100])
+				'\n'.join(["output:\n", str(outs), "\nerrors:\n", str(errs)]), title=_(str(command)[:100])
 			)
 
 	return (outs, errs)

@@ -10,6 +10,8 @@
   "upstream",
   "origin",
   "token",
+  "email",
+  "username",
   "branch",
   "column_break_6",
   "enabled"
@@ -51,11 +53,21 @@
   {
    "fieldname": "column_break_6",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "username",
+   "fieldtype": "Data",
+   "label": "Username"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-04-27 02:58:02.935887",
+ "modified": "2021-04-27 21:51:09.421308",
  "modified_by": "Administrator",
  "module": "Documentation Editor",
  "name": "Repository",
