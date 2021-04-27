@@ -177,9 +177,7 @@ def popen(command, *args, **kwargs):
 		frappe.throw(
 				frappe.get_traceback(), title=_(command[:100] if not command else "subprocess error" )
 			)
-	print("outs", outs,)
-	print("errs", errs)
-	print(proc.returncode)
+
 	if proc.returncode and raise_err:
 		frappe.throw(
 				errs, title=_(command[:100] if not command else "subprocess error" )
