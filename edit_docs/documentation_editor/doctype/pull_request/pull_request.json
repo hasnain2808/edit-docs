@@ -34,7 +34,7 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Unapproved\nApproved"
+   "options": "Processing\nUnder Review\nRejected\nApproved"
   },
   {
    "fieldname": "attachment_path_mapping",
@@ -84,7 +84,7 @@
  "index_web_pages_for_search": 1,
  "is_published_field": "published",
  "links": [],
- "modified": "2021-04-19 16:10:06.479836",
+ "modified": "2021-04-30 03:56:33.660551",
  "modified_by": "Administrator",
  "module": "Documentation Editor",
  "name": "Pull Request",
