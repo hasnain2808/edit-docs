@@ -106,6 +106,8 @@ class PullRequest(WebsiteGenerator):
 			shutil.rmtree(self.repository_base_path)
 		except:
 			frappe.msgprint("Error while deleting directory")
+		self.status = "Under Review"
+		frappe.db.commit()
 
 	def update_file(self, path, code):
 		f = open(path, "w")
@@ -151,9 +153,16 @@ def update_pr_status():
 
 	for pr in frappe.db.get_all("Pull Request", fields=["name", "pr_link"]):
 		if pr.pr_link:
-			gh_pr = repo.get_pull(int(pr.pr_link.split("/")[-1]))
-			status = "Approved" if gh_pr.merged else "Unapproved"
-			frappe.db.update("Pull Request", pr.name, "status", status)
+			try:
+				gh_pr = repo.get_pull(int(pr.pr_link.split("/")[-1]))
+			except :
+				continue
+
+			if gh_pr.merged:
+				frappe.db.update("Pull Request", pr.name, "status", "Approved")
+				continue
+			if gh_pr.state == "closed":
+				frappe.db.update("Pull Request", pr.name, "status", "Rejected")
 	frappe.db.commit()
 
 
