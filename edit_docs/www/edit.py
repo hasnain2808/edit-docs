@@ -110,7 +110,7 @@ def _update(content, attachments="{}"):
 
 
 	pull_req_dict = {
-		"status": "Unapproved",
+		"status": "Processing",
 		"raised_by": frappe.session.user,
 		"pr_title": "docs: automated pull request",
 		"pr_body": f"author: {frappe.session.user}",
@@ -125,6 +125,8 @@ def _update(content, attachments="{}"):
 	update_file_links(attachments, pull_req.name)
 
 	create_edited_files(content, pull_req.name, attachments)
+
+	frappe.db.commit()
 
 	pull_req.raise_pr()
 
