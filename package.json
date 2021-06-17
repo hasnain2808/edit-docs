@@ -1,0 +1,7 @@
+{
+  "name": "edit-docs",
+  "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^27.1.0",
+    "@ckeditor/ckeditor5-markdown-gfm": "^27.1.0"
+  }
+}

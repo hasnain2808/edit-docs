@@ -16,12 +16,34 @@ app_license = "MIT"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/edit_docs/css/edit_docs.css"
-# app_include_js = "/assets/edit_docs/js/edit_docs.js"
+# app_include_js = [
+# 	"/assets/edit_docs/node_modules/@ckeditor/ckeditor5-editor-classic/build/editor-classic.js",
+# "/assets/edit_docs/node_modules/@ckeditor/ckeditor5-essentials/build/essentials.js",
+# "/assets/edit_docs/node_modules/@ckeditor/ckeditor5-basic-styles/build/ckeditor5-basic-styles",
+# "/assets/edit_docs/node_modules/@ckeditor/ckeditor5-markdown-gfm/build/markdown-gfm.js",
+# ]
 
+node_modules = {
+	# '@ckeditor': {
+	# 	'js': [
+	# 		"/assets/frappe/js/lib/jquery/jquery.min.js",
+	# 		"/assets/edit_docs/node_modules/@ckeditor/ckeditor5-editor-classic/build/editor-classic.js",
+	# 		"/assets/edit_docs/node_modules/@ckeditor/ckeditor5-essentials/build/essentials.js",
+	# 		"/assets/edit_docs/node_modules/@ckeditor/ckeditor5-basic-styles/build/basic-styles.js",
+	# 		"/assets/edit_docs/node_modules/@ckeditor/ckeditor5-markdown-gfm/build/markdown-gfm.js"
+	# 	],
+	# }
+}
+# web_include_js = node_modules.get('@ckeditor').get('js')
+# web_include_js = 
 # include js, css files in header of web template
 # web_include_css = "/assets/edit_docs/css/edit_docs.css"
-# web_include_js = "/assets/edit_docs/js/edit_docs.js"
-
+# web_include_js = [
+# 	"/assets/edit_docs/node_modules/@ckeditor/ckeditor5-editor-classic/build/editor-classic.js",
+# "/assets/edit_docs/node_modules/@ckeditor/ckeditor5-essentials/build/essentials.js",
+# "/assets/edit_docs/node_modules/@ckeditor/ckeditor5-basic-styles/build/ckeditor5-basic-styles",
+# "/assets/edit_docs/node_modules/@ckeditor/ckeditor5-markdown-gfm/build/markdown-gfm.js",
+# ]
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "edit_docs/public/scss/website"
 

@@ -1,18 +1,32 @@
-{% extends "templates/web.html" %}
+{% extends "frappe/templates/web.html" %}
 
 {%- block head_include %}
 {{ super() }}
 <!-- <link rel="stylesheet" href="/assets/wiki/css/wiki.css"> -->
 {% endblock -%}
 
-{% block page_container %}
-<div class="from-markdown">
-	<h1>Edit WebPage</h1>
+{% block page_content %}
+
+<div class="frappe-card">
+
+	<div class="doc-search-container">
+		<div class="website-search doc-search" id="search-container">
+		</div>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	</div>
+
+
 </div>
+<br>
 
-<div class="container">
+<div class="frappe-card" style="display: none;">
 
-<!-- <form class="mt-8" action="/api/method/wiki.www.edit.update" method="POST"> -->
+
+
+	<!-- <form class="mt-8" action="/api/method/wiki.www.edit.update" method="POST"> -->
 	<input class="d-none" type="text" name="csrf_token" value="{{ frappe.session.csrf_token }}">
 	<!-- <input class="d-none" type="text" name="wiki_page" value="{{ title }}"> -->
 	<div class="form-group">
@@ -20,69 +34,97 @@
 		<!-- <input id="title" class="form-control" type="text" name="title" value="{{ title }}"> -->
 		<input id="route" class="form-control" type="text" name="route" value="{{ route }}" hidden>
 	</div>
-	<div class="routedisp"></div>
-	<!-- <div class="form-group">
-		<label class="sr-only" for="content">Content</label> -->
-		<ul class="nav nav-tabs" role="tablist">
-			<li class="nav-item" role="presentation">
-				<a class="nav-link active" id="write-tab" data-toggle="tab" href="#write" role="tab"
-					aria-controls="write" aria-selected="true">Write</a>
-			</li>
-			<li class="nav-item" role="presentation">
-				<a class="nav-link" id="preview-tab" data-toggle="tab" href="#preview" role="tab"
-					aria-controls="preview" aria-selected="false">Preview</a>
-			</li>
-			<li class="nav-item" role="presentation">
-				<a class="nav-link" id="diff-tab" data-toggle="tab" href="#diff" role="tab"
-					aria-controls="diff" aria-selected="false">Compare</a>
-			</li>
-			<li class="nav-item" role="presentation">
-				<a class="nav-link" id="attachment-tab" data-toggle="tab" href="#attachment" role="tab"
-					aria-controls="attachment" aria-selected="false">Attachment</a>
-			</li>
-			<li class="nav-item" role="presentation">
-				<a class="nav-link" id="files-tab" data-toggle="tab" href="#files" role="tab"
-					aria-controls="files" aria-selected="false">Edited Files</a>
-			</li>
-		</ul>
-		<div class="mt-4 tab-content">
-			<div class="tab-pane fade show active" id="write" role="tabpanel" aria-labelledby="write-tab">
-				<div class="wiki-write"></div>
 
-			</div>
-			<div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
-				<div class="from-markdown wiki-preview"></div>
-			</div>
-			<div class="tab-pane fade" id="diff" role="tabpanel" aria-labelledby="preview-tab">
-				<div class="from-markdown wiki-diff"></div>
-			</div>
-			<div class="tab-pane fade" id="attachment" role="tabpanel" aria-labelledby="attachment-tab">
-				<div class="wiki-attachment"></div>
-				<br>
-				<div class='btn add-attachment'>Upload Attachment</div>
-			</div>
-			<div class="tab-pane fade" id="files" role="tabpanel" aria-labelledby="files-tab">
-				<div class="wiki-files"></div>
-			</div>
+
+	<div class="routedisp" ></div>
+</div>
+
+<div class="frappe-card">
+
+	<ul class="nav nav-tabs" role="tablist">
+		<li class="nav-item" role="presentation">
+			<a class="nav-link active" id="write-tab" data-toggle="tab" href="#write" role="tab" aria-controls="write"
+				aria-selected="true">Write</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="preview-tab" data-toggle="tab" href="#preview" role="tab" aria-controls="preview"
+				aria-selected="false">Preview</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="diff-tab" data-toggle="tab" href="#diff" role="tab" aria-controls="diff"
+				aria-selected="false">Compare</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="attachment-tab" data-toggle="tab" href="#attachment" role="tab"
+				aria-controls="attachment" aria-selected="false">Attachment</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="files-tab" data-toggle="tab" href="#files" role="tab" aria-controls="files"
+				aria-selected="false">Edited Files</a>
+		</li>
+	</ul>
+	<div class="mt-4 tab-content">
+		<div class="tab-pane fade show active" id="write" role="tabpanel" aria-labelledby="write-tab">
+			<div class="wiki-write"></div>
+
 		</div>
+		<div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
+			<div class="from-markdown wiki-preview"></div>
+		</div>
+		<div class="tab-pane fade" id="diff" role="tabpanel" aria-labelledby="preview-tab">
+			<div class="from-markdown wiki-diff"></div>
+		</div>
+		<div class="tab-pane fade" id="attachment" role="tabpanel" aria-labelledby="attachment-tab">
+			<div class="wiki-attachment"></div>
+			<br>
+			<div class='btn add-attachment'>Upload Attachment</div>
+		</div>
+		<div class="tab-pane fade" id="files" role="tabpanel" aria-labelledby="files-tab">
+			<div class="wiki-files"></div>
+		</div>
+	</div>
 
-		<br><br>
-
-		<div class="submit-section"></div>
+</div>
+<div class="frappe-card">
+	<div class="submit-section"></div>
 
 	<!-- </div> -->
 	<!-- <div class="form-group"> -->
-		<!-- <label class="font-size-sm" for="edit_message">Edit Message</label>
+	<!-- <label class="font-size-sm" for="edit_message">Edit Message</label>
 		<input id="edit_message" class="form-control form-control-sm" type="text" name="edit_message" placeholder="Write a small message here explaining this change"> -->
-	</div>
 	<!-- <button type="submit" class="btn btn-primary">Save Page</button> -->
-<!-- </form> -->
+	<!-- </form> -->
 </div>
+</div>
+
+
+<textarea id="snippet-markdown" cols="30" rows="10">
+	sdj
+</textarea>
+
 {% endblock %}
 
 
 
 
+{%- block footer -%}
+<div class="footer-info">
+	<div class="container">
+
+		<div class="row">
+			<div class="footer-col-left col-sm-6 col-12">
+
+			</div>
+			{# powered #}
+			<div class="footer-col-right col-sm-6 col-12 footer-powered">
+				{% block powered %}
+				{% include "templates/includes/footer/footer_powered.html" %}
+				{% endblock %}
+			</div>
+		</div>
+	</div>
+</div>
+{%- endblock -%}
 
 <!-- {%- block script -%}
 <script>
@@ -107,5 +149,8 @@
 	Vue.prototype.frappe = window.frappe;
 </script>
 
+
+<script>
+</script>
 
 {% endblock %}

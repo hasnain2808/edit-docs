@@ -1,9 +1,27 @@
+
+// import ClassicEditor from '@ckeditor/build-classic.js';
+
+// import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials.js';
+// import Bold from './@ckeditor/ckeditor5-basic-styles/src/bold.js';
+// import Italic from './@ckeditor/ckeditor5-basic-styles/src/italic.js';
+// // ...
+
+// import Markdown from './@ckeditor/ckeditor5-markdown-gfm/src/markdown.js';
+
+import Marked from 'marked'
+
+
+
 frappe.ready(async () => {
-  new EditAsset();
+
+  ()=>new EditAsset();
+
+
 });
 
 class EditAsset {
   constructor(opts) {
+
     this.edited_files = {};
     this.make_code_field_group();
     this.make_edit_field_group();
@@ -11,6 +29,25 @@ class EditAsset {
     this.render_preview();
     this.add_attachment_handler();
     this.set_listeners();
+    this.setup_search("#search-container", '{{ docs_search_scope or "" }}');
+
+    $(".web-footer .container")
+      .removeClass("container")
+      .addClass("container-fluid doc-container");
+
+
+    // ClassicEditor.create(document.querySelector("#snippet-markdown"), {
+    //   plugins: [
+    //     Markdown,
+
+    //     Essentials,
+    //     Bold,
+    //     Italic,
+    //     // ...
+    //   ],
+    //   // ...
+    // });
+
   }
 
   render_preview() {
@@ -37,6 +74,7 @@ class EditAsset {
           method: "edit_docs.www.edit.preview",
           args: {
             content: this.code_field_group.get_value("code"),
+            name: $('#wiki_page').val(),
             path: this.route,
             attachments: this.attachments,
           },
@@ -61,13 +99,15 @@ class EditAsset {
           fieldname: "route_link",
           fieldtype: "Data",
           default: route || "",
+          // change: () => this.update_code(),
+          hidden: 1,
         },
-        {
-          label: __("Edit Code"),
-          fieldname: "code",
-          fieldtype: "Button",
-          click: () => this.update_code(),
-        },
+        // {
+        //   label: __("Edit Code"),
+        //   fieldname: "code",
+        //   fieldtype: "Button",
+        //   click: () => this.update_code(),
+        // },
         // {
         //   label: __("Overwrite From Disk"),
         //   fieldname: "code_from_disk",
@@ -86,7 +126,7 @@ class EditAsset {
         {
           label: __("Edit Code"),
           fieldname: "code",
-          fieldtype: "Code",
+          fieldtype: "Text Editor",
           columns: 4,
           reqd: 1,
           options: "Markdown",
@@ -337,4 +377,182 @@ class EditAsset {
     </td>`).appendTo(row);
     }
   }
+
+  setup_search(target, search_scope) {
+    if (typeof target === "string") {
+      target = $(target);
+    }
+
+    let $search_input = $(`<div class="dropdown" id="dropdownMenuSearch">
+			<input type="search" class="form-control" placeholder="Search the docs (Press / to focus)" />
+			<div class="overflow-hidden shadow dropdown-menu w-100" aria-labelledby="dropdownMenuSearch">
+			</div>
+			<div class="search-icon">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor" stroke-width="2" stroke-linecap="round"
+					stroke-linejoin="round"
+					class="feather feather-search">
+					<circle cx="11" cy="11" r="8"></circle>
+					<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+				</svg>
+			</div>
+		</div>`);
+
+    target.empty();
+    $search_input.appendTo(target);
+
+    // let $dropdown = $search_input.find('.dropdown');
+    let $dropdown_menu = $search_input.find(".dropdown-menu");
+    let $input = $search_input.find("input");
+    let dropdownItems;
+    let offsetIndex = 0;
+
+    $(document).on("keypress", (e) => {
+      if ($(e.target).is("textarea, input, select")) {
+        return;
+      }
+      if (e.key === "/") {
+        e.preventDefault();
+        $input.focus();
+      }
+    });
+
+    $input.on(
+      "input",
+      frappe.utils.debounce(() => {
+        if (!$input.val()) {
+          clear_dropdown();
+          return;
+        }
+
+        frappe
+          .call({
+            method: "frappe.search.web_search",
+            args: {
+              scope: search_scope || null,
+              query: $input.val(),
+              limit: 5,
+            },
+          })
+          .then((r) => {
+            let results = r.message || [];
+            let dropdown_html;
+            if (results.length == 0) {
+              dropdown_html = `<div class="dropdown-item">No results found</div>`;
+            } else {
+              dropdown_html = results
+                .map((r) => {
+                  return `<a class="dropdown-item" data-name="/${r.path}">
+						<h6>${r.title_highlights || r.title}</h6>
+						<div style="white-space: normal;">${r.content_highlights}</div>
+					</a>`;
+                })
+                .join("");
+            }
+            $dropdown_menu.html(dropdown_html);
+            $dropdown_menu.addClass("show");
+            dropdownItems = $dropdown_menu.find(".dropdown-item");
+
+            var me = this;
+            $dropdown_menu.on("click", `.dropdown-item`, function () {
+              var dfs = [];
+              console.log($(this).attr("data-name"));
+              me.edit_field_group
+                .get_field("route_link")
+                .set_value($(this).attr("data-name"))
+                .then(() => {
+                  me.update_code();
+                  $("#write-tab").addClass("active");
+                  $("#files-tab").removeClass("active");
+                  $("#write").addClass("show active");
+                  $("#files").removeClass("show active");
+                });
+              clear_dropdown();
+            });
+          });
+      }, 500)
+    );
+
+    $input.on("focus", () => {
+      if (!$input.val()) {
+        clear_dropdown();
+      } else {
+        $input.trigger("input");
+      }
+    });
+
+    $input.keydown(function (e) {
+      // up: 38, down: 40
+      if (e.which == 40) {
+        navigate(0);
+      }
+    });
+
+    $dropdown_menu.keydown(function (e) {
+      // up: 38, down: 40
+      if (e.which == 38) {
+        navigate(-1);
+      } else if (e.which == 40) {
+        navigate(1);
+      } else if (e.which == 27) {
+        setTimeout(() => {
+          clear_dropdown();
+        }, 300);
+      }
+    });
+
+    // Clear dropdown when clicked
+    $(window).click(function () {
+      clear_dropdown();
+    });
+
+    $search_input.click(function (event) {
+      event.stopPropagation();
+    });
+
+    // Navigate the list
+    var navigate = function (diff) {
+      offsetIndex += diff;
+
+      if (offsetIndex >= dropdownItems.length) offsetIndex = 0;
+      if (offsetIndex < 0) offsetIndex = dropdownItems.length - 1;
+      $input.off("blur");
+      dropdownItems.eq(offsetIndex).focus();
+    };
+
+    function clear_dropdown() {
+      offsetIndex = 0;
+      $dropdown_menu.html("");
+      $dropdown_menu.removeClass("show");
+      dropdownItems = undefined;
+    }
+
+    // Remove focus state on hover
+    $dropdown_menu.mouseover(function () {
+      dropdownItems.blur();
+    });
+  }
 }
+
+// let ismdwn = 0
+// rpanrResize.addEventListener('mousedown', mD)
+
+// function mD(event) {
+//   ismdwn = 1
+//   document.body.addEventListener('mousemove', mV)
+//   document.body.addEventListener('mouseup', end)
+// }
+
+// function mV(event) {
+//   if (ismdwn === 1) {
+//     pan1.style.flexBasis = event.clientX + "px"
+//   } else {
+//     end()
+//   }
+// }
+// const end = (e) => {
+//   ismdwn = 0
+//   document.body.removeEventListener('mouseup', end)
+//   rpanrResize.removeEventListener('mousemove', mV)
+// }

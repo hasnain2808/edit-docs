@@ -1,0 +1,50 @@
+Retrieving assets...
+
+[32m✔[0m Downloaded Frappe assets from http://assets.frappeframework.com/416fc393307b9e9cf5bcd5ce83b22bd7d91e7a9b.tar.gz
+
+Extracting assets...
+
+yarn run v1.22.10
+$ FRAPPE_ENV=production node rollup/build.js --skip_frappe
+[32m✔[0m Restored js/barcode_scanner.min.js
+[32m✔[0m Restored js/chat.js.map
+[32m✔[0m Restored js/control.min.js
+[32m✔[0m Restored js/user_profile_controller.min.js.map
+[32m✔[0m Restored js/web_form.min.js
+[32m✔[0m Restored js/data_import_tools.min.js.map
+[32m✔[0m Restored js/dialog.min.js
+[32m✔[0m Restored js/report.min.js
+[32m✔[0m Restored js/libs.min.js
+[32m✔[0m Restored js/checkout.min.js.map
+[32m✔[0m Restored js/web_form.min.js.map
+[32m✔[0m Restored js/control.min.js.map
+[32m✔[0m Restored js/form.min.js
+[32m✔[0m Restored js/bootstrap-4-web.min.js.map
+[32m✔[0m Restored js/frappe-web.min.js
+[32m✔[0m Restored js/chat.js
+[32m✔[0m Restored js/frappe-recorder.min.js
+[32m✔[0m Restored js/report.min.js.map
+[32m✔[0m Restored js/data_import_tools.min.js
+[32m✔[0m Restored js/desk.min.js.map
+[32m✔[0m Restored js/checkout.min.js
+[32m✔[0m Restored js/dialog.min.js.map
+[32m✔[0m Restored js/user_profile_controller.min.js
+[32m✔[0m Restored js/frappe-web.min.js.map
+[32m✔[0m Restored js/moment-bundle.min.js
+[32m✔[0m Restored js/bootstrap-4-web.min.js
+[32m✔[0m Restored js/list.min.js
+[32m✔[0m Restored js/barcode_scanner.min.js.map
+[32m✔[0m Restored js/desk.min.js
+[32m✔[0m Restored js/list.min.js.map
+[32m✔[0m Restored js/frappe-recorder.min.js.map
+[32m✔[0m Restored js/form.min.js.map
+[32m✔[0m Restored css/printview.css
+[32m✔[0m Restored css/rollup.manifest.css
+[32m✔[0m Restored css/email.css
+[32m✔[0m Restored css/desk.min.css
+[32m✔[0m Restored css/frappe-rtl.css
+[32m✔[0m Restored css/frappe-web-b4.css
+[32m✔[0m Restored css/report.min.css
+[32m✔[0m Restored css/frappe-chat-web.css
+[32m✔[0m Restored css/login.css
+[32m✔[0m Restored css/web_form.css

@@ -1,0 +1,24 @@
+#pan1 {
+    flex-grow: 1;
+    flex-shrink: 1; 
+    flex-basis: 50%;
+  }
+  
+  #pan2 {
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow-x: auto;
+  }
+  
+  #rpanrResize {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 0.01rem;
+    cursor: col-resize;
+    margin: 0 0 0 auto;
+    border: 1px solid #EDF2F7  }
+
+  .frappe-card {
+    margin: 1rem;
+}
+

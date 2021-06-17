@@ -4,3 +4,8 @@
 *.swp
 tags
 edit_docs/docs/current
+node_modules
+node_modules/
+node_modules/*
+*/node_modules/*
+node_modules/
